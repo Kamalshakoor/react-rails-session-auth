@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import authService from "../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -9,7 +10,6 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [msg , setMsg] = useState("");
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
@@ -19,10 +19,10 @@ const Signup = () => {
         password,
         confirmPassword
       );
-      setMsg('Account created successfully');
+      toast.success("Account created successfully");
       navigate('/login');
     } catch (error) {
-      console.log(error);
+      toast.error('Something went wrong.Please try again later');
     }
   };
 
@@ -78,7 +78,6 @@ const Signup = () => {
                 Signup
               </button>
             </form>
-            <p className="text-center text-success px-4 py-5">{msg}</p>
           </div>
         </div>
       </div>
