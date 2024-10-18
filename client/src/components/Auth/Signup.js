@@ -3,13 +3,21 @@ import { useState } from "react";
 import authService from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
-const Signup = () => {
+const Signup = ( { isLoggedIn } ) => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      toast.success("You are already logged in");
+      navigate("/"); // Redirect if already logged in
+    }
+  }, [isLoggedIn, navigate]);
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
@@ -22,7 +30,9 @@ const Signup = () => {
       toast.success("Account created successfully");
       navigate('/login');
     } catch (error) {
-      toast.error('Something went wrong.Please try again later');
+      toast.error(error.response.data.password_confirmation[0]);
+      // toast.error('Something went wrong.Please try again later');
+
     }
   };
 
@@ -32,8 +42,9 @@ const Signup = () => {
         <div className="row">
           <div className="col-md-6 offset-md-3 mt-5 mb-5 p-4 rounded shadow  ">
             <h1 className="text-center">Signup</h1>
-            <hr className="w-25 mx-auto" />
-            <form onSubmit={handleSignup} className="form form-control">
+            <hr  />
+
+            <form onSubmit={handleSignup} className="mt-3">
               <div className="form-group">
                 <label htmlFor="username">Username</label>
                 <input
@@ -42,6 +53,7 @@ const Signup = () => {
                   id="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -52,6 +64,7 @@ const Signup = () => {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -62,6 +75,7 @@ const Signup = () => {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
               <div className="form-group">
@@ -72,6 +86,7 @@ const Signup = () => {
                   id="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
                 />
               </div>
               <button type="submit" className="btn btn-outline-primary mt-3">
