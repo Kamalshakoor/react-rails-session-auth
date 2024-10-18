@@ -1,37 +1,45 @@
-import axios from 'axios';
-const API_URL = 'http://localhost:3000/api/v1'
-                                                                          
+import axios from "axios";
+const API_URL = "http://localhost:3000/api/v1";
+
 const signup = (username, email, password, confirmPassword) => {
-    return axios.post(`${API_URL}/users`, {
+  return axios.post(
+    `${API_URL}/users`,
+    {
       user: {
         username,
         email,
         password,
-        password_confirmation: confirmPassword
-    }
-    }, {withCredentials: true})
-}
+        password_confirmation: confirmPassword,
+      },
+    },
+    { withCredentials: true }
+  );
+};
 
 const login = (email, password) => {
-    return axios.post(`${API_URL}/login`, {
-        email,
-        password
-    },{withCredentials: true})
-}
+  return axios.post(
+    `${API_URL}/login`,
+    {
+      email,
+      password,
+    },
+    { withCredentials: true }
+  );
+};
 
 const logout = () => {
-    return axios.delete(`${API_URL}/logout`, {}, {withCredentials: true})
-}
+  return axios.delete(`${API_URL}/logout`, { withCredentials: true });
+};
 
 const checkAuthStatus = () => {
-    return axios.get(`${API_URL}/check_auth`, {withCredentials: true})
-}
+  return axios.get(`${API_URL}/logged_in`, { withCredentials: true });
+};
 
 const authService = {
-    signup,
-    login,
-    logout,
-    checkAuthStatus
-}
+  signup,
+  login,
+  logout,
+  checkAuthStatus,
+};
 
-export default authService
+export default authService;
